@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
       user: req.user.id,
     })
     const saveContact = await contact.save()
-    res.json(saveContact)
+    res.status(200).json(saveContact)
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: error.message })

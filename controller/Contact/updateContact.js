@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
       { $set: newContact},
       { new: true },
     )
-    res.json({ contact})
+    res.status(200).json({ contact})
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: error.message })

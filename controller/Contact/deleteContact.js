@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     }
 
     await Contact.findByIdAndDelete(req.params.id)
-    res.json({ success: 'Deleted Contact' })
+    res.status(200).json({ success: 'Deleted Contact' })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: error.message })
