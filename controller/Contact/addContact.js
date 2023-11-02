@@ -1,4 +1,4 @@
-const Contact = require('../../models/contact')
+const Contact = require('../../model/contact')
 const { validationResult } = require('express-validator')
 
 module.exports = async (req, res) => {

@@ -18,5 +18,5 @@ app.use('/api/auth', require('./routes/Auth'))
 app.use('/api/contact', require('./routes/contactInfo'))
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`)
+  console.log(`App listening on port ${PORT}`)
 })

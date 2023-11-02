@@ -12,4 +12,4 @@ const ContactSchema = new Schema({
   date: { type: Date, default: Date.now },
 })
 
-module.exports = mongoose.model('Contact', ContactSchema)
+module.exports = mongoose.model('contact', ContactSchema)
