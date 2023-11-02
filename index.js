@@ -7,15 +7,17 @@ const express = require('express')
 const app = express()
 const { PORT } = require('./config')
 const connectToMongo = require('./db')
-var cors = require('cors')
+const user = require('./routes/Auth')
+const contact = require('./routes/ContactInfo')
+const cors = require('cors')
 
 app.use(cors({ origin: '*' }))
 app.use(express.json())
 
 connectToMongo()
 
-app.use('/api/auth', require('./routes/Auth'))
-app.use('/api/contact', require('./routes/ContactInfo'))
+app.use('/api/auth', user)
+app.use('/api/contact', contact)
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`)

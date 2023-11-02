@@ -8,14 +8,13 @@ module.exports = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
-
-    const Contact = new Contact({
+    const contact = new Contact({
       firstName,
       lastName,
-      phoneNumber,
+      phoneNumber: parseInt(phoneNumber),
       user: req.user.id,
     })
-    const saveContact = await Contact.save()
+    const saveContact = await contact.save()
     res.json(saveContact)
   } catch (error) {
     console.log(error)

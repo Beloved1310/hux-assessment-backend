@@ -9,7 +9,7 @@ const fetchAllContact= require('../controller/Contact/findContacts')
 
 router.post(
   '/addContact',
-  authUser,
+ 
   [
     body('firstName', 'Title must be atleast 3 characters...').isLength({ min: 3 }),
     body('lastName', 'Title must be atleast 3 characters...').isLength({ min: 3 }),
