@@ -15,7 +15,7 @@ app.use(express.json())
 connectToMongo()
 
 app.use('/api/auth', require('./routes/Auth'))
-app.use('/api/contact', require('./routes/contactInfo'))
+app.use('/api/contact', require('./routes/ContactInfo'))
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`)
