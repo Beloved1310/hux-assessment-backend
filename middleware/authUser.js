@@ -1,5 +1,5 @@
 const { JWT_SECRET } = require('../config')
-var jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
   //get the user from the jwt token and add the id to object of request
