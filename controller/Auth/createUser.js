@@ -11,6 +11,7 @@ module.exports = async (req, res) => {
   const { name, email, password } = req.body
 
   if (!errors.isEmpty()) {
+    // Return validation errors if there are any
     return res.status(400).json({ errors: errors.array() })
   }
 
@@ -19,6 +20,7 @@ module.exports = async (req, res) => {
     const existingUser = await User.findOne({ where: { email } })
 
     if (existingUser) {
+      // Return an error response if the user already exists
       return res.status(400).json({
         success: success,
         error: 'Sorry, an account with this email already exists...',
@@ -45,9 +47,11 @@ module.exports = async (req, res) => {
     const authToken = jwt.sign(data, JWT_SECRET)
     success = true
 
+    // Return a success response with an authentication token and user's name
     res.json({ authToken, success, name })
   } catch (error) {
     console.error(error)
+    // Return an error response if there's an internal server error
     res.status(500).json({ message: error.message })
   }
 }
