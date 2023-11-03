@@ -1,23 +1,22 @@
-const Contact = require('../../model/contact')
+const { sequelize } = require('../../db')
+const Contact = require('../../models/contact')
 
 module.exports = async (req, res) => {
   try {
-    //find the note by delete
-    let contact = await Contact.findById(req.params.id)
+    const contact = await Contact.findByPk(req.params.id)
+
     if (!contact) {
-      res.status(404).send('Not Found')
+      return res.status(404).send('Not Found')
     }
-
-    // allow deletion
-
-    if (contact.user.toString() !== req.user.id) {
+    if (contact.user !== req.user.id) {
       return res.status(401).send('Not allowed')
     }
 
-    await Contact.findByIdAndDelete(req.params.id)
+    await contact.destroy()
+
     res.status(200).json({ success: 'Deleted Contact' })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(500).json({ message: error.message })
   }
 }

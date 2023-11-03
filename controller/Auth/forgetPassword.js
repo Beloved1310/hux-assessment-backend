@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator')
-const User = require('../../model/user')
+const { sequelize } = require('../../db') 
+const User = require('../../models/user') 
 const bcrypt = require('bcrypt')
 
 module.exports = async (req, res) => {
@@ -10,24 +11,33 @@ module.exports = async (req, res) => {
   }
 
   const { email, newPassword } = req.body
-  let user = await User.findOne({ email })
+
   try {
-    if (!user)
+    const user = await User.findOne({ where: { email } })
+
+    if (!user) {
       return res
         .status(400)
-        .send({ error: 'User with this email does not exists' })
-    const salt = await bcrypt.genSalt(10)
-    let hashPassword = await bcrypt.hash(newPassword, salt)
+        .json({ error: 'User with this email does not exist' })
+    }
 
-    const update = await User.updateOne({ password: hashPassword })
-    if (!update) return res.status(400).send({ error: 'reset password error' })
+    const salt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(newPassword, salt)
+
+    // Update the user's password using Sequelize
+    const updatedUser = await user.update({ password: hashPassword })
+
+    if (!updatedUser) {
+      return res.status(400).json({ error: 'Password reset error' })
+    }
+
     success = true
     return res.json({
       message: 'Password Updated, Proceed to Login',
       success,
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(500).json({ message: error.message })
   }
 }
