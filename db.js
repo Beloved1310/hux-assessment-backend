@@ -1,18 +1,20 @@
-const mongoose = require('mongoose')
+const { Sequelize } = require('sequelize');
 
-const { MONGODBURI } = require('./config')
+const sequelize = new Sequelize('contact-info', process.env.DB_NAME, process.env.DB_PASSWORD, {
+  host: 'localhost',
+  dialect: 'postgres',
+});
 
-const connectToMongo = async () => {
-  mongoose.set('strictQuery', false)
-  const mongooseConnect = await mongoose.connect(MONGODBURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  if (mongooseConnect) {
-    console.log('Connected to Database')
-  } else {
-    console.log('Not Connected to Database')
+async function connectToPostgres() {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection to the database has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
   }
 }
 
-module.exports = connectToMongo
+module.exports = {
+  sequelize,
+  connectToPostgres,
+};

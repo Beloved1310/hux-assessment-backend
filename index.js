@@ -6,7 +6,7 @@
 const express = require('express')
 const app = express()
 const { PORT } = require('./config')
-const connectToMongo = require('./db')
+const { connectToPostgres } = require('./db')
 const user = require('./routes/Auth')
 const contact = require('./routes/ContactInfo')
 const cors = require('cors')
@@ -14,7 +14,7 @@ const cors = require('cors')
 app.use(cors({ origin: '*' }))
 app.use(express.json())
 
-connectToMongo()
+connectToPostgres()
 
 app.use('/api/auth', user)
 app.use('/api/contact', contact)

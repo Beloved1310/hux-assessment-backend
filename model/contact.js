@@ -1,15 +1,31 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+// models/contact.js
 
-const ContactSchema = new Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+const { Sequelize, DataTypes } = require('sequelize')
+const sequelize = require('../db')
+
+const Contact = sequelize.define('Contact', {
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [1, 200],
+    },
   },
-  firstName: { type: String, trim: true, required: true, maxlength: 200 },
-  lastName: { type: String, trim: true, required: true, maxlength: 2000 },
-  phoneNumber: { type: Number, required: true},
-  date: { type: Date, default: Date.now },
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [1, 2000],
+    },
+  },
+  phoneNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  date: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.fn('NOW'),
+  },
 })
 
-module.exports = mongoose.model('contact', ContactSchema)
+module.exports = Contact

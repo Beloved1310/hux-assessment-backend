@@ -1,8 +1,9 @@
-const Contact = require('../../model/contact')
+const { sequelize } = require('../../db')
+const Contact = require('../../models/contact')
 
 module.exports = async (req, res) => {
   try {
-    const contact = await Contact.findOne({ _id: req.params.id })
+    const contact = await Contact.findByPk(req.params.id)
 
     if (!contact) {
       return res.status(404).json({ message: 'Contact not found' })

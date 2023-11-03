@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator')
-const User = require('../../model/user')
+const { sequelize } = require('../../db')
+const User = require('../../models/user')
 const bcrypt = require('bcrypt')
 const { JWT_SECRET } = require('../../config')
 const jwt = require('jsonwebtoken')
@@ -8,31 +9,36 @@ module.exports = async (req, res) => {
   let success = false
   const errors = validationResult(req)
   const { name, email, password } = req.body
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-  let user = await User.findOne({ email })
 
   try {
-    if (user) {
+    // Check if the user with the provided email already exists
+    const existingUser = await User.findOne({ where: { email } })
+
+    if (existingUser) {
       return res.status(400).json({
         success: success,
-        error: 'Sorry Email With this user Already Exists...',
+        error: 'Sorry, an account with this email already exists...',
       })
     }
 
     const salt = await bcrypt.genSalt(10)
-    let hashPassword = await bcrypt.hash(password, salt)
-    user = await User.create({
+    const hashPassword = await bcrypt.hash(password, salt)
+
+    // Create a new user using Sequelize
+    const newUser = await User.create({
       name,
       email,
-      password : hashPassword,
+      password: hashPassword,
     })
 
     const data = {
       user: {
-        id: user.id,
-        name : user.name,
+        id: newUser.id,
+        name: newUser.name,
       },
     }
 
@@ -41,7 +47,7 @@ module.exports = async (req, res) => {
 
     res.json({ authToken, success, name })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(500).json({ message: error.message })
   }
 }
