@@ -56,7 +56,7 @@ The major testing done is manual testing using postman technologies and intergra
   - express-validation : for validation inputr.
   - joi: for data validation of javascript.
   - jsonwebtoken : for creating users token.
-  - mongoose: for storing data on mongodb.
+  - squelieze: for storing data on squelieze.
   - supertest: for testing purposes.
 
 # Built-With
