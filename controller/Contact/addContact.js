@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator')
-const { sequelize } = require('../../sequelize')
+const { sequelize } = require('../../db')
 const Contact = require('../../models/contact')
 module.exports = async (req, res) => {
   try {

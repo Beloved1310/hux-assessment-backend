@@ -1,7 +1,7 @@
 // models/contact.js
 
 const { Sequelize, DataTypes } = require('sequelize')
-const sequelize = require('../db')
+const { sequelize }= require('../db')
 
 const Contact = sequelize.define('Contact', {
   firstName: {
